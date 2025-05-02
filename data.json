@@ -1,0 +1,21 @@
+{
+    "penguin_id": "P123",
+    "species": "Adelie",
+    "sex": "Male",
+    "measurements": [
+      {
+        "date": "2023-01-15",
+        "weight_kg": 4.2,
+        "season": "Summer",
+        "molting": true,
+        "location": "Torgersen Island"
+      },
+      {
+        "date": "2023-04-22",
+        "weight_kg": 3.8,
+        "season": "Autumn",
+        "molting": false,
+        "location": "Torgersen Island"
+      }
+    ]
+  }

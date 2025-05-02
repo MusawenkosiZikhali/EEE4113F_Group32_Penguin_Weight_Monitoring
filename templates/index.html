@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penguin Weight Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='penguin-logo.jpg') }}" alt="Penguin Logo" class="header-logo">
+            </div>
+            <div class="header-text">
+                <h1>Penguin Weight Tracker</h1>
+                <p>Explore penguin weight variations across seasons and molting status</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Filters</h2>
+            
+            <div class="filter-group">
+                <h3>Species</h3>
+                {% for s in species %}
+                <label>
+                    <input type="checkbox" name="species" value="{{ s }}" checked>
+                    {{ s }}
+                </label>
+                {% endfor %}
+            </div>
+            
+            <div class="filter-group">
+                <h3>Sex</h3>
+                <label><input type="checkbox" name="sex" value="Male" checked> Male</label>
+                <label><input type="checkbox" name="sex" value="Female" checked> Female</label>
+            </div>
+            
+            <div class="filter-group">
+                <h3>Season</h3>
+                {% for season in seasons %}
+                <label>
+                    <input type="checkbox" name="seasons" value="{{ season }}" checked>
+                    {{ season }}
+                </label>
+                {% endfor %}
+            </div>
+            
+            <div class="filter-group">
+                <h3>Molting Status</h3>
+                <label><input type="radio" name="molting" value="all" checked> All</label>
+                <label><input type="radio" name="molting" value="true"> Molting</label>
+                <label><input type="radio" name="molting" value="false"> Not Molting</label>
+            </div>
+            
+            <div class="filter-group">
+                <h3>Location</h3>
+                {% for location in locations %}
+                <label>
+                    <input type="checkbox" name="locations" value="{{ location }}" checked>
+                    {{ location }}
+                </label>
+                {% endfor %}
+            </div>
+            
+            <button id="apply-filters">Apply Filters</button>
+            <button id="refresh-data"><i class="fas fa-sync-alt"></i> Refresh Data</button>
+        </aside>
+
+        <main class="content">
+            <div class="chart-container">
+                <video src="{{ url_for('static', filename='video.mp4') }}" alt="Penguins" class="pic">
+            </div>
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <h3>Average Weight</h3>
+                    <p id="avg-weight">4.23 kg</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Measurements Count</h3>
+                    <p id="measurements-count">42</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Heaviest Record</h3>
+                    <p id="max-weight">5.1 kg</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Lightest Record</h3>
+                    <p id="min-weight">3.5 kg</p>
+                </div>
+            </div>
+        
+            <!-- Data Table Section -->
+            <div class="data-section">
+                <h2>Sample Penguin Data</h2>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Penguin ID</th>
+                                <th>Species</th>
+                                <th>Sex</th>
+                                <th>Weight (kg)</th>
+                                <th>Season</th>
+                                <th>Molting</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>P001</td>
+                                <td>Adelie</td>
+                                <td>Male</td>
+                                <td>4.2</td>
+                                <td>Summer</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>P002</td>
+                                <td>Gentoo</td>
+                                <td>Female</td>
+                                <td>5.1</td>
+                                <td>Winter</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>P003</td>
+                                <td>Chinstrap</td>
+                                <td>Male</td>
+                                <td>3.5</td>
+                                <td>Spring</td>
+                                <td>Yes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="data-count">Showing 3 sample records</p>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

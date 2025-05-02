@@ -1,0 +1,316 @@
+:root {
+    --primary-color: #3a86ff;
+    --secondary-color: #8338ec;
+    --accent-color: #ff006e;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    --success-color: #28a745;
+    --info-color: #17a2b8;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    color: var(--dark-color);
+}
+
+header {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+header p {
+    margin: 0.5rem 0 0;
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.container {
+    display: flex;
+    max-width: 1200px;
+    margin: 2rem auto;
+    gap: 2rem;
+    padding: 0 1rem;
+}
+
+.sidebar {
+    flex: 0 0 250px;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.filter-group {
+    margin-bottom: 1.5rem;
+}
+
+.filter-group h3 {
+    margin: 0 0 0.75rem;
+    font-size: 1.1rem;
+    color: var(--primary-color);
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.filter-group input[type="checkbox"],
+.filter-group input[type="radio"] {
+    margin-right: 0.5rem;
+}
+
+#apply-filters {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    transition: background-color 0.2s;
+}
+
+#apply-filters:hover {
+    background-color: #2a75e6;
+}
+
+.chart-container {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.stat-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+    color: var(--dark-color);
+}
+
+.stat-card p {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        flex: 0 0 auto;
+    }
+}
+
+/* Data Table Styles */
+.data-section {
+    margin-top: 2rem;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.data-section h2 {
+    margin-top: 0;
+    color: var(--primary-color);
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+.data-table th, .data-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.data-table th {
+    background-color: var(--primary-color);
+    color: white;
+    position: sticky;
+    top: 0;
+}
+
+.data-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.data-table tr:hover {
+    background-color: #e6f7ff;
+}
+
+.data-count {
+    text-align: right;
+    font-style: italic;
+    color: #666;
+}
+
+.error {
+    color: #dc3545;
+    text-align: center;
+    font-style: italic;
+}
+
+#penguin-data td {
+    vertical-align: middle;
+}
+
+#penguin-data tr[style="display: none;"] {
+    display: none !important;
+}
+
+/* Add to your style.css */
+.data-table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+/* Add to your existing header styles */
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header-text {
+    flex: 1;
+}
+
+.logo-container {
+    margin-left: 3rem;
+    border-radius: 50%;
+}
+
+.header-logo {
+    height: 80px;
+    border-radius: 50%;
+    width: auto;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    transition: transform 0.3s ease;
+}
+
+.header-logo:hover {
+    transform: scale(1.05) rotate(-5deg);
+}
+
+/* For mobile responsiveness */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .logo-container {
+        margin: 1rem 0 0;
+    }
+    
+    .header-logo {
+        height: 60px;
+    }
+}
+
+/* Chart container styles */
+.chart-container {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    position: relative;
+    height: 400px; /* Fixed height for consistent sizing */
+}
+
+/* Stats container styles */
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.stat-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+    color: var(--dark-color);
+}
+
+.stat-card p {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.chart-container {
+    background: rgba(255, 255, 255, 0);
+    padding: 0rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    height: 400px; /* Fixed height */
+    position: relative;
+}
+
+.pic {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 8px;
+}
