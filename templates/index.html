@@ -1,150 +1,131 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Penguin Weight Tracker</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Penguin Data Zone</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-    <header>
-        <div class="header-content">
-            <div class="logo-container">
-                <img src="{{ url_for('static', filename='penguin-logo.jpg') }}" alt="Penguin Logo" class="header-logo">
-            </div>
-            <div class="header-text">
-                <h1>Penguin Weight Tracker</h1>
-                <p>Explore penguin weight variations across seasons and molting status</p>
-            </div>
-        </div>
-    </header>
-
-    <div class="container">
-        <aside class="sidebar">
-            <h2>Filters</h2>
-            
-            <div class="filter-group">
-                <h3>Species</h3>
-                {% for s in species %}
-                <label>
-                    <input type="checkbox" name="species" value="{{ s }}" checked>
-                    {{ s }}
-                </label>
-                {% endfor %}
-            </div>
-            
-            <div class="filter-group">
-                <h3>Sex</h3>
-                <label><input type="checkbox" name="sex" value="Male" checked> Male</label>
-                <label><input type="checkbox" name="sex" value="Female" checked> Female</label>
-            </div>
-            
-            <div class="filter-group">
-                <h3>Season</h3>
-                {% for season in seasons %}
-                <label>
-                    <input type="checkbox" name="seasons" value="{{ season }}" checked>
-                    {{ season }}
-                </label>
-                {% endfor %}
-            </div>
-            
-            <div class="filter-group">
-                <h3>Molting Status</h3>
-                <label><input type="radio" name="molting" value="all" checked> All</label>
-                <label><input type="radio" name="molting" value="true"> Molting</label>
-                <label><input type="radio" name="molting" value="false"> Not Molting</label>
-            </div>
-            
-            <div class="filter-group">
-                <h3>Location</h3>
-                {% for location in locations %}
-                <label>
-                    <input type="checkbox" name="locations" value="{{ location }}" checked>
-                    {{ location }}
-                </label>
-                {% endfor %}
-            </div>
-            
-            <button id="apply-filters">Apply Filters</button>
-            <button id="refresh-data"><i class="fas fa-sync-alt"></i> Refresh Data</button>
-        </aside>
-
-        <main class="content">
-            <div class="chart-container">
-                <video src="{{ url_for('static', filename='video.mp4') }}" alt="Penguins" class="pic">
-            </div>
-            
-            <div class="stats-container">
-                <div class="stat-card">
-                    <h3>Average Weight</h3>
-                    <p id="avg-weight">4.23 kg</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Measurements Count</h3>
-                    <p id="measurements-count">42</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Heaviest Record</h3>
-                    <p id="max-weight">5.1 kg</p>
-                </div>
-                <div class="stat-card">
-                    <h3>Lightest Record</h3>
-                    <p id="min-weight">3.5 kg</p>
-                </div>
-            </div>
-        
-            <!-- Data Table Section -->
-            <div class="data-section">
-                <h2>Sample Penguin Data</h2>
-                <div class="table-responsive">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Penguin ID</th>
-                                <th>Species</th>
-                                <th>Sex</th>
-                                <th>Weight (kg)</th>
-                                <th>Season</th>
-                                <th>Molting</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>P001</td>
-                                <td>Adelie</td>
-                                <td>Male</td>
-                                <td>4.2</td>
-                                <td>Summer</td>
-                                <td>Yes</td>
-                            </tr>
-                            <tr>
-                                <td>P002</td>
-                                <td>Gentoo</td>
-                                <td>Female</td>
-                                <td>5.1</td>
-                                <td>Winter</td>
-                                <td>No</td>
-                            </tr>
-                            <tr>
-                                <td>P003</td>
-                                <td>Chinstrap</td>
-                                <td>Male</td>
-                                <td>3.5</td>
-                                <td>Spring</td>
-                                <td>Yes</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <p class="data-count">Showing 3 sample records</p>
-            </div>
-        </main>
+    <!-- Video Background -->
+    <div class="video-container">
+        <video autoplay muted loop playsinline src="{{ url_for('static', filename='videos/video.mp4') }}" ></video>
+        <div class="video-overlay"></div>
     </div>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <!-- Header/Navigation -->
+    <header class="main-header">
+        <nav>
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/penguin-logo.jpg') }}" alt="Penguin Data Zone">
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="{{ url_for('data_explorer') }}">Data</a></li>
+                <li><a href="{{ url_for('about') }}">About</a></li>
+            </ul>
+            <div class="search-container">
+                <input type="text" placeholder="Search penguins..." class="search-input">
+                <button class="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Protecting Penguins Through Data</h1>
+            <p>Explore comprehensive penguin population data and conservation status</p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('data_explorer') }}" class="btn-primary">Explore Data</a>
+                <a href="{{ url_for('about') }}" class="btn-secondary">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Stats Section -->
+     
+
+
+    <script src="script.js"></script>
 </body>
+
+<section class="articles-section">
+  <!-- <h2>Penguin Research Spotlight</h2> -->
+  <div class="articles-grid">
+    <article class="article-card">
+      <div class="article-image" style="background-image: url('https://science.uct.ac.za/sites/default/files/styles/standard_med/public/content_migration/science_uct_ac_za/60/images/penguins.jpg?h=c9f93661&itok=2hLM0XYc');">
+        <span class="article-tag">Conservation</span>
+      </div>
+      <div class="article-content">
+        <h3>Penguins indicate the health of local ecosystems</h3>
+        <p class="article-meta">Published May 27, 2019 • 5 min read</p>
+        <p>The way adult penguins hunt and the body condition of their chicks are both directly linked to local fish abundance...</p>
+        <a href="https://science.uct.ac.za/articles/2019-05-27-penguins-indicate-health-local-ecosystems" target="_blank" class="article-link">Read story <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </article>
+
+    <article class="article-card">
+      <div class="article-image" style="background-image: url('https://www.news.uct.ac.za/cache/images/userfiles/images/news/2019/800x0/normal/2019-06-07_Africanpenguins.jpg');">
+        <span class="article-tag">Conservation</span>
+      </div>
+      <div class="article-content">
+        <h3>The diet dynamics of African penguins</h3>
+        <p class="article-meta">Published June 7, 2019 • 6 min read</p>
+        <p>Understanding how these seabirds respond to changes in the availability of food is important for...</p>
+        <a href="https://www.news.uct.ac.za/article/-2019-06-07-the-diet-dynamics-of-african-penguins" target="_blank" class="article-link">Read story <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </article>
+
+    <article class="article-card">
+      <div class="article-image" style="background-image: url('https://images.fineartamerica.com/images-medium-large/african-penguin-chicks-moulting-peter-chadwick.jpg');">
+        <span class="article-tag">Conservation</span>
+      </div>
+      <div class="article-content">
+        <h3>Marine areas for African penguins before and after the crucial stage of moulting</h3>
+        <p class="article-meta">Published June 8, 2022 • 50 min read</p>
+        <p>Penguins undergo an annual catastrophic moult when....</p>
+        <a href="https://www.nature.com/articles/s41598-022-12969-w" target="_blank" class="article-link">Read Article <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </article>
+  </div>
+  <footer class="site-footer">
+    <div class="footer-container">
+      <!-- Logo and Description -->
+      <div class="footer-about">
+        <img src="{{ url_for('static', filename='images/penguin-logo.jpg') }}" alt="Penguin Tracker Logo" class="footer-logo">
+        <p>Tracking penguin populations for conservation since 2023</p>
+        <div class="social-links">
+
+        </div>
+      </div>
+  
+      <!-- Quick Links -->
+      <div class="footer-links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/data">Data Explorer</a></li>
+          <li><a href="/about">About Us</a></li>
+        </ul>
+      </div>
+  
+      <!-- Contact Info -->
+      <div class="footer-contact">
+        <h3>Contact</h3>
+        <p><i class="fas fa-map-marker-alt"></i> University of Cape Town, South Africa</p>
+      </div>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <p>© 2025 EEE4113F | Department of Electrical Engineering, University of Cape Town </p>
+  </div>
+</section>
+
 </html>

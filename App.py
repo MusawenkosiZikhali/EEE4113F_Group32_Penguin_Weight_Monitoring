@@ -1,172 +1,119 @@
-from flask import Flask, render_template, request
+from flask import Flask, jsonify, render_template, request
 from pymongo import MongoClient
-from bson.json_util import dumps
-from bson import json_util
-from datetime import datetime
-from flask import jsonify
+from bson import json_util, ObjectId
 import json
+from datetime import datetime
 
 app = Flask(__name__)
 
 # MongoDB connection
-client = MongoClient('mongodb://localhost:27017/')
+client = MongoClient('mongodb+srv://musawenkosizikhali7:musa123@testweightpenguin.mudjhr2.mongodb.net')
 db = client['penguin_db']
 collection = db['penguins']
 
-from bson import ObjectId
+def get_latest_measurement(penguin):
+    """Helper function to get the most recent measurement"""
+    if 'measurements' in penguin and penguin['measurements']:
+        # Sort measurements by date (newest first)
+        sorted_measurements = sorted(
+            penguin['measurements'], 
+            key=lambda x: datetime.fromisoformat(x['date']), 
+            reverse=True
+        )
+        return sorted_measurements[0]
+    return None
 
-def build_query(filters):
-    """Construct MongoDB query from filters"""
-    query = {}
-    
-    # Species filter
-    if filters.get('species'):
-        query['species'] = {'$in': filters['species']}
-    
-    # Sex filter
-    if filters.get('sex'):
-        query['sex'] = {'$in': filters['sex']}
-    
-    # Measurements subdocument filters
-    measurements_query = {}
-    
-    # Season filter
-    if filters.get('seasons'):
-        measurements_query['season'] = {'$in': filters['seasons']}
-    
-    # Molting filter
-    if filters.get('molting') is not None:
-        measurements_query['molting'] = filters['molting']
-    
-    # Location filter
-    if filters.get('locations'):
-        measurements_query['location'] = {'$in': filters['locations']}
-    
-    # Combine measurements filters
-    if measurements_query:
-        query['measurements'] = {'$elemMatch': measurements_query}
-    
-    return query
-
-@app.route('/debug_data')
-def debug_data():
-    # Get first 5 documents
-    docs = list(collection.find().limit(5))
-    return jsonify(docs)  # Requires: from flask import jsonify
-
-@app.route('/')
 @app.route('/')
 def index():
-    # Get unique values for filters
-    species = collection.distinct("species")
-    seasons = collection.distinct("measurements.season")
-    locations = collection.distinct("measurements.location")
-    
-    # Get raw penguin data (limited to 50 records for performance)
-    penguin_data = list(collection.aggregate([
-        {'$unwind': '$measurements'},
-        {'$limit': 50},
-        {'$project': {
-            'penguin_id': 1,
-            'species': 1,
-            'sex': 1,
-            'weight_kg': '$measurements.weight_kg',
-            'season': '$measurements.season',
-            'molting': '$measurements.molting',
-            'location': '$measurements.location',
-            'date': '$measurements.date'
-        }}
-    ]))
-    
-    return render_template('index.html', 
-                        species=species, 
-                        seasons=seasons, 
-                        locations=locations,
-                        penguin_data=penguin_data)
+    return render_template('index.html')
 
-# @app.route('/get_data', methods=['POST'])
-# def get_data():
-#     filters = request.json
-    
-#     # Build MongoDB query based on filters
-#     query = {}
-#     if filters.get('species'):
-#         query['species'] = {'$in': filters['species']}
-#     if filters.get('sex'):
-#         query['sex'] = {'$in': filters['sex']}
-    
-#     # Handle measurements subdocument filters
-#     measurements_query = {}
-#     if filters.get('seasons'):
-#         measurements_query['season'] = {'$in': filters['seasons']}
-#     if filters.get('molting') is not None:
-#         measurements_query['molting'] = filters['molting']
-#     if filters.get('locations'):
-#         measurements_query['location'] = {'$in': filters['locations']}
-    
-#     if measurements_query:
-#         query['measurements'] = {'$elemMatch': measurements_query}
-    
-#     # Aggregate data for visualization
-#     pipeline = [
-#         {'$unwind': '$measurements'},
-#         {'$match': query} if query else {'$match': {}},
-#         {'$group': {
-#             '_id': {
-#                 'species': '$species',
-#                 'season': '$measurements.season',
-#                 'molting': '$measurements.molting'
-#             },
-#             'avg_weight': {'$avg': '$measurements.weight_kg'},
-#             'count': {'$sum': 1}
-#         }}
-#     ]
-    
-#     results = list(collection.aggregate(pipeline))
-#     return dumps(results)
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
-@app.route('/get_data', methods=['POST'])
-def get_data():
-    filters = request.json
-    print("Received filters:", filters)  # Debugging
-    
+@app.route('/data')
+def data_explorer():
     try:
-        pipeline = [
-            {'$unwind': '$measurements'},
-            {'$match': build_query(filters)},
-            {'$group': {
-                '_id': {
-                    'species': '$species',
-                    'season': '$measurements.season',
-                    'molting': '$measurements.molting'
-                },
-                'avg_weight': {'$avg': '$measurements.weight_kg'},
-                'count': {'$sum': 1}
-            }}
-        ]
+        # Get all penguins with their latest measurements
+        penguins = list(collection.find({}))
         
-        print("Generated pipeline:", pipeline)  # Debugging
-        results = list(collection.aggregate(pipeline))
-        return json_util.dumps(results)
+        # Process each penguin to include latest measurement data
+        processed_penguins = []
+        for penguin in penguins:
+            latest = get_latest_measurement(penguin)
+            if latest:
+                processed_penguins.append({
+                    '_id': str(penguin['_id']),  # Convert ObjectId to string
+                    'penguin_id': penguin['penguin_id'],
+                    'species': penguin['species'],
+                    'weight': latest['weight_kg'],
+                    'condition': latest['condition'],
+                    'location': latest['location'],
+                    'last_measured': latest['date'],
+                })
         
-    except Exception as e:
-        print("Error in get_data:", str(e))  # Debugging
-        return jsonify({'error': str(e)}), 500
-
-@app.template_filter('format_date')
-def format_date(value):
-    if not value:
-        return ''
-    try:
-        if isinstance(value, str):
-            # If it's already a string, return as-is or parse if needed
-            return value
-        elif isinstance(value, datetime):
-            return value.strftime('%Y-%m-%d')
-        return str(value)
-    except Exception as e:
-        print(f"Date formatting error: {e}")
-        return str(value)
+        return render_template('data.html', penguins=processed_penguins)  # Pass all data for JS filtering
     
+    except Exception as e:
+        print(f"Error loading data: {e}")
+        return render_template('data.html',penguins=[])
+
+
+@app.route('/penguin/<penguin_id>')
+def penguin_detail(penguin_id):
+    try:
+        # Validate penguin_id format if needed (example: check if numeric)
+        # if not penguin_id.isalnum():  # Adjust validation as per your ID format
+        #     return render_template('error.html', 
+        #                         error_code=400,
+        #                         error_message="Invalid penguin ID format"), 400
+
+        # Get penguin data with projection to exclude unnecessary fields
+        penguin = collection.find_one(
+            {'penguin_id': penguin_id},
+            {'_id': 0, 'measurements._id': 0}  # Exclude MongoDB _id fields
+        )
+
+        if not penguin:
+            return render_template('error.html',
+                                error_code=404,
+                                error_message=f"Penguin {penguin_id} not found"), 404
+
+        print("here ------------------------------------------------------------------------------------------")
+        # Sort measurements by date (newest first)
+        sorted_measurements = sorted(
+            penguin['measurements'],
+            key=lambda x: datetime.fromisoformat(x['date']),
+            reverse=True
+        )
+
+        # Prepare additional stats for the template
+        stats = {
+            'weight_history': [m['weight_kg'] for m in sorted_measurements],
+            'date_labels': [m['date'][:10] for m in sorted_measurements],
+            'first_seen': sorted_measurements[-1]['date'][:10],
+            'measurement_count': len(sorted_measurements)
+        }
+
+        return render_template(
+            'penguin_detail.html',
+            penguin=penguin,
+            measurements=sorted_measurements,
+            stats=stats
+        )
+
+    except Exception as e:
+        app.logger.error(f"Error loading penguin details: {str(e)}")
+        return render_template('error.html',
+                            error_code=500,
+                            error_message="Internal server error"), 500
+
+@app.template_filter('date_format')
+def date_format(value):
+    if isinstance(value, str):
+        dt = datetime.fromisoformat(value)
+        return dt.strftime('%Y-%m-%d')
+    return value
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=8080)

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Penguin Data Zone</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Reuse the same video background and header from index.html -->
+    <div class="video-container">
+        <video autoplay muted loop playsinline src="{{ url_for('static', filename='videos/video.mp4') }}"></video>
+        <div class="video-overlay"></div>
+    </div>
+
+    <header class="main-header">
+        <nav>
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/penguin-logo.jpg') }}" alt="Penguin Data Zone">
+            </div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('data_explorer') }}">Data</a></li>
+                <li><a href="{{ url_for('about') }}">About</a></li>
+            </ul>
+            <div class="search-container">
+                <input type="text" placeholder="Search penguins..." class="search-input">
+                <button class="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main About Content -->
+    <main class="about-container">
+        <section class="about-hero">
+            <h1>About Penguin Data Zone</h1>
+            <p>Understanding and protecting African Penguins through innovative data tracking</p>
+        </section>
+
+        <section class="problem-statement">
+            <h2>The Challenge</h2>
+            <div class="statement-content">
+                <div class="text-content">
+                    <p>African Penguins face significant challenges during their molting period when they rely exclusively on fat reserves. Current methods of weighing penguins during this sensitive time cause stress and disturbance, leading to:</p>
+                    <ul>
+                        <li>Incomplete weight data</li>
+                        <li>Difficulty assessing body condition</li>
+                        <li>Missed malnutrition symptoms</li>
+                        <li>Reduced conservation effectiveness</li>
+                    </ul>
+                    <p>Without accurate weight monitoring, we risk increased post-molt mortality, decreased breeding success, and missed warnings of ecosystem imbalances.</p>
+                </div>
+                <div class="image-content">
+                    <img src="{{ url_for('static', filename='images/molting-penguin.jpg') }}" alt="Molting African Penguin">
+                </div>
+            </div>
+        </section>
+
+        <section class="our-solution">
+            <h2>Our Solution</h2>
+            <div class="solution-cards">
+                <div class="solution-card">
+                    <i class="fas fa-weight"></i>
+                    <h3>Non-Invasive Monitoring</h3>
+                    <p>Automated measurement system that safely tracks weight without direct human interaction during molting.</p>
+                </div>
+                <div class="solution-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Comprehensive Data</h3>
+                    <p>Detailed weight trends and health indicators for each penguin throughout the molting cycle.</p>
+                </div>
+                <div class="solution-card">
+                    <i class="fas fa-bell"></i>
+                    <h3>Early Warning System</h3>
+                    <p>Alerts for penguins in critical condition, enabling timely conservation interventions.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="team-section">
+            <h2>Our Team</h2>
+            <div class="team-members">
+                <div class="team-member">
+                    <h3>Musawenkosi Zikhali</h3>
+                    <p>Lead Researcher</p>
+                </div>
+                <div class="team-member">
+                    <h3>Nhlalonhle Tsotetsi</h3>
+                    <p>Data Specialist</p>
+                </div>
+                <div class="team-member">
+                    <h3>Sisekelo Mahaye</h3>
+                    <p>Conservation Expert</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Reuse the same footer from index.html -->
+      <footer class="site-footer">
+        <div class="footer-container">
+        <!-- Logo and Description -->
+        <div class="footer-about">
+            <img src="{{ url_for('static', filename='images/penguin-logo.jpg') }}" alt="Penguin Tracker Logo" class="footer-logo">
+            <p>Tracking penguin populations for conservation since 2023</p>
+            <div class="social-links">
+
+            </div>
+        </div>
+    
+        <!-- Quick Links -->
+        <div class="footer-links">
+            <h3>Quick Links</h3>
+            <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/data">Data Explorer</a></li>
+            <li><a href="/about">About Us</a></li>
+            </ul>
+        </div>
+    
+        <!-- Contact Info -->
+        <div class="footer-contact">
+            <h3>Contact</h3>
+            <p><i class="fas fa-map-marker-alt"></i> University of Cape Town, South Africa</p>
+        </div>
+        </div>
+    </footer>
+    <div class="footer-bottom">
+        <p>© 2025 EEE4113F | Department of Electrical Engineering, University of Cape Town </p>
+    </div>
+
+    <script src="{{ url_for('static', filename='scripts/scripts.js') }}"></script>
+</body>
+</html>

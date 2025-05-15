@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penguin Details - {{ penguin.penguin_id }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/detail_style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Video Background -->
+    <div class="video-container">
+        <div class="video-overlay"></div>
+    </div>
+
+    <header class="main-header data-header">
+        <nav>
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/penguin-logo.jpg') }}" alt="Penguin Data Zone">
+            </div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('data_explorer') }}">Data</a></li>
+                <li><a href="{{ url_for('about') }}">About</a></li>
+            </ul>
+            <div class="search-container">
+                <input type="text" placeholder="Search penguins..." class="search-input">
+                <button class="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="penguin-detail-container">
+        <section class="penguin-info-section">
+            <div class="penguin-card">
+                <div class="card-image">
+                    <img src="{{ url_for('static', filename='images/african.jpg') }}" alt="Penguin {{ penguin.penguin_id }}">
+                </div>
+                <div class="card-content">
+                    <h1>Penguin {{ penguin.penguin_id }}</h1>
+                    <div class="penguin-meta">
+                        <p><strong>Species:</strong> {{ penguin.species }}</p>
+                        <p><strong>First Seen:</strong> {{ stats.first_seen }}</p>
+                        <p><strong>Measurements Taken:</strong> {{ stats.measurement_count }}</p>
+                    </div>
+                    
+                    <div class="current-stats">
+                        <h2>Current Status</h2>
+                        <p><strong>Location:</strong> {{ measurements[0].location }}</p>
+                        <p><strong>Weight:</strong> {{ measurements[0].weight_kg }} kg</p>
+                        <p><strong>Condition:</strong> 
+                            <span class="status-{{ measurements[0].condition.lower() }}">
+                                {{ measurements[0].condition }}
+                            </span>
+                        </p>
+                        <p><strong>Last Measured:</strong> {{ measurements[0].date|date_format }}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="measurement-history">
+            <h2>Measurement History</h2>
+            <div class="chart-container">
+                <canvas id="weightChart"></canvas>
+            </div>
+            
+            <table class="measurement-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Weight (kg)</th>
+                        <th>Condition</th>
+                        <th>Location</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for measurement in measurements %}
+                    <tr>
+                        <td>{{ measurement.date|date_format }}</td>
+                        <td>{{ measurement.weight_kg }}</td>
+                        <td class="status-{{ measurement.condition.lower() }}">{{ measurement.condition }}</td>
+                        <td>{{ measurement.location }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-about">
+                <img src="{{ url_for('static', filename='images/penguin-logo.jpg') }}" alt="Penguin Tracker Logo" class="footer-logo">
+                <p>Tracking penguin populations for conservation</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/data">Data Explorer</a></li>
+                    <li><a href="/about">About Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3>Contact</h3>
+                <p><i class="fas fa-map-marker-alt"></i> University of Cape Town, South Africa</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Penguin Tracker | Department of Electrical Engineering, University of Cape Town</p>
+        </div>
+    </footer>
+
+    <script>
+        // Weight chart using Chart.js
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('weightChart').getContext('2d');
+            const weightChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: {{ stats.date_labels|tojson }},
+                    datasets: [{
+                        label: 'Weight (kg)',
+                        data: {{ stats.weight_history|tojson }},
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 2,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            title: {
+                                display: true,
+                                text: 'Weight (kg)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Date'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
