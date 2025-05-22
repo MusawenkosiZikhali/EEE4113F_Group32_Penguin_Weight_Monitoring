@@ -25,9 +25,14 @@
                 <li><a href="{{ url_for('data_explorer') }}">Data</a></li>
                 <li><a href="{{ url_for('about') }}">About</a></li>
             </ul>
-            <div class="search-container">
-                <input type="text" placeholder="Search penguins..." class="search-input">
-                <button class="search-button">
+            <div class="search-container" id="search-container">
+                <input type="text" 
+                      placeholder="Search by Penguin ID..." 
+                      class="search-input" 
+                      id="penguin-search"
+                      autocomplete="off"
+                      onkeydown="handleSearchKeydown(event)">
+                <button class="search-button" onclick="performSearch()">
                     <i class="fas fa-search"></i>
                 </button>
             </div>
@@ -43,7 +48,7 @@
                 <div class="card-content">
                     <h1>Penguin {{ penguin.penguin_id }}</h1>
                     <div class="penguin-meta">
-                        <p><strong>Species:</strong> {{ penguin.species }}</p>
+                        <p><strong>Species:</strong> African Penguin</p>
                         <p><strong>First Seen:</strong> {{ stats.first_seen }}</p>
                         <p><strong>Measurements Taken:</strong> {{ stats.measurement_count }}</p>
                     </div>
@@ -52,12 +57,34 @@
                         <h2>Current Status</h2>
                         <p><strong>Location:</strong> {{ measurements[0].location }}</p>
                         <p><strong>Weight:</strong> {{ measurements[0].weight_kg }} kg</p>
-                        <p><strong>Condition:</strong> 
+                        <!-- <p><strong>Condition:</strong> 
                             <span class="status-{{ measurements[0].condition.lower() }}">
                                 {{ measurements[0].condition }}
                             </span>
-                        </p>
+                        </p> -->
                         <p><strong>Last Measured:</strong> {{ measurements[0].date|date_format }}</p>
+                        <div class="stat-item">
+                            <span class="stat-label">Max Weight:</span>
+                            <span class="stat-value">{{ stats.max_weight }} kg</span>
+                        </div>
+                        {% if stats.is_critical %}
+                        <div class="stat-item">
+                            <span class="stat-label color=red ">RED ZONE:</span>
+                            <i class="fas fa-exclamation-triangle critical-icon"></i>
+                        </div>
+                        {% endif %}
+                        <div class="stat-item">
+                            <span class="stat-label">Min Weight:</span>
+                            <span class="stat-value">{{ stats.min_weight }} kg</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Weight Variability:</span>
+                            <span class="stat-value">{{ stats.weight_stddev }} kg</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">weight change rate:</span>
+                            <span class="stat-value">{{ stats.weight_change_rate }} %</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -65,6 +92,11 @@
 
         <section class="measurement-history">
             <h2>Measurement History</h2>
+            <div class="download-section">
+                <button id="download-csv" class="download-button">
+                    <i class="fas fa-download"></i> Download CSV
+                </button>
+            </div>
             <div class="chart-container">
                 <canvas id="weightChart"></canvas>
             </div>
@@ -74,21 +106,29 @@
                     <tr>
                         <th>Date</th>
                         <th>Weight (kg)</th>
-                        <th>Condition</th>
                         <th>Location</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="table-body">
                     {% for measurement in measurements %}
                     <tr>
                         <td>{{ measurement.date|date_format }}</td>
                         <td>{{ measurement.weight_kg }}</td>
-                        <td class="status-{{ measurement.condition.lower() }}">{{ measurement.condition }}</td>
                         <td>{{ measurement.location }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
+
+            <div class="pagination-controls">
+                <button id="prev-page" disabled>
+                    <i class="fas fa-chevron-left"></i> Previous
+                </button>
+                <span id="page-info">Page 1</span>
+                <button id="next-page">
+                    Next <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
         </section>
     </main>
 
@@ -115,6 +155,33 @@
             <p>© 2025 Penguin Tracker | Department of Electrical Engineering, University of Cape Town</p>
         </div>
     </footer>
+
+    <script src="{{ url_for('static', filename='scripts/scripts.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/details.js') }}"></script>
+
+    <script>
+    // CSV Download functionality
+    document.getElementById('download-csv').addEventListener('click', function() {
+        // Create CSV content
+        let csvContent = "Date,Weight (kg),Condition,Location\n";
+        
+        // Add measurement data
+        {% for measurement in measurements %}
+        csvContent += `"{{ measurement.date|date_format }}",{{ measurement.weight_kg }},"{{ measurement.condition }}","{{ measurement.location }}"\n`;
+        {% endfor %}
+        
+        // Create download link
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', `penguin_{{ penguin.penguin_id }}_measurements.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
+</script>
 
     <script>
         // Weight chart using Chart.js
@@ -154,5 +221,6 @@
             });
         });
     </script>
+    
 </body>
 </html>
