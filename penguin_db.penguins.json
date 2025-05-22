@@ -1,0 +1,951 @@
+[{
+  "_id": {
+    "$oid": "681e77667d2a72fe04df1b70"
+  },
+  "penguin_id": "Billy",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-10T08:30:00Z",
+      "weight_kg": 3.1,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-02-05T09:15:00Z",
+      "weight_kg": 2.7,
+      "condition": "underweight",
+      "location": "Boulders Beach"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "681e77667d2a72fe04df1b71"
+  },
+  "penguin_id": "Waddlesworth",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-12T10:00:00Z",
+      "weight_kg": 4.2,
+      "condition": "normal",
+      "location": "Robben Island"
+    },
+    {
+      "date": "2023-02-08T11:30:00Z",
+      "weight_kg": 4.8,
+      "condition": "overweight",
+      "location": "Robben Island"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "681e77667d2a72fe04df1b72"
+  },
+  "penguin_id": "Tuxedo Sam",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-15T09:45:00Z",
+      "weight_kg": 2.9,
+      "condition": "normal",
+      "location": "Stony Point"
+    },
+    {
+      "date": "2023-02-10T08:15:00Z",
+      "weight_kg": 2.4,
+      "condition": "critical",
+      "location": "Stony Point"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "681e77667d2a72fe04df1b73"
+  },
+  "penguin_id": "APT-2023-004",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-08T07:30:00Z",
+      "weight_kg": 4.5,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-02-03T10:45:00Z",
+      "weight_kg": 4.3,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-03-20T09:00:00Z",
+      "weight_kg": 4.6,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "681e77667d2a72fe04df1b74"
+  },
+  "penguin_id": "APT-2023-005",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-20T08:00:00Z",
+      "weight_kg": 3.8,
+      "condition": "normal",
+      "location": "Robben Island"
+    },
+    {
+      "date": "2023-02-15T09:30:00Z",
+      "weight_kg": 3.2,
+      "condition": "normal",
+      "location": "Robben Island"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "6820e07a0ae0fa3bc7a2a079"
+  },
+  "penguin_id": "APT-2023-005",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-20T08:00:00Z",
+      "weight_kg": 3.8,
+      "condition": "normal",
+      "location": "Robben Island"
+    },
+    {
+      "date": "2023-02-15T09:30:00Z",
+      "weight_kg": 3.2,
+      "condition": "normal",
+      "location": "Robben Island"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "6820e08a0ae0fa3bc7a2a07a"
+  },
+  "penguin_id": "APT-2023-001",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-10T08:30:00Z",
+      "weight_kg": 3.1,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-02-05T09:15:00Z",
+      "weight_kg": 2.7,
+      "condition": "underweight",
+      "location": "Boulders Beach"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "6820e0900ae0fa3bc7a2a07b"
+  },
+  "penguin_id": "APT-2023-002",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-12T10:00:00Z",
+      "weight_kg": 4.2,
+      "condition": "normal",
+      "location": "Robben Island"
+    },
+    {
+      "date": "2023-02-08T11:30:00Z",
+      "weight_kg": 4.8,
+      "condition": "overweight",
+      "location": "Robben Island"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "6820e0940ae0fa3bc7a2a07c"
+  },
+  "penguin_id": "APT-2023-003",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-15T09:45:00Z",
+      "weight_kg": 2.9,
+      "condition": "normal",
+      "location": "Stony Point"
+    },
+    {
+      "date": "2023-02-10T08:15:00Z",
+      "weight_kg": 2.4,
+      "condition": "critical",
+      "location": "Stony Point"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "6820e09c0ae0fa3bc7a2a07d"
+  },
+  "penguin_id": "APT-2023-004",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-08T07:30:00Z",
+      "weight_kg": 4.5,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-02-03T10:45:00Z",
+      "weight_kg": 4.3,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-03-20T09:00:00Z",
+      "weight_kg": 4.6,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "6820e0a00ae0fa3bc7a2a07e"
+  },
+  "penguin_id": "APT-2023-002",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-12T10:00:00Z",
+      "weight_kg": 4.2,
+      "condition": "normal",
+      "location": "Robben Island"
+    },
+    {
+      "date": "2023-02-08T11:30:00Z",
+      "weight_kg": 4.8,
+      "condition": "overweight",
+      "location": "Robben Island"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "6820e0a30ae0fa3bc7a2a07f"
+  },
+  "penguin_id": "APT-2023-003",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-15T09:45:00Z",
+      "weight_kg": 2.9,
+      "condition": "normal",
+      "location": "Stony Point"
+    },
+    {
+      "date": "2023-02-10T08:15:00Z",
+      "weight_kg": 2.4,
+      "condition": "critical",
+      "location": "Stony Point"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "5f8d8c7b5d1c2d1e9c8b4567"
+  },
+  "penguin_id": "APT-2023-001",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-05T08:15:00Z",
+      "weight_kg": 3.2,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-01-20T09:30:00Z",
+      "weight_kg": 3,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-02-10T10:45:00Z",
+      "weight_kg": 2.9,
+      "condition": "underweight",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-03-05T08:00:00Z",
+      "weight_kg": 3.1,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-04-12T11:15:00Z",
+      "weight_kg": 3.3,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "5f8d8c7b5d1c2d1e9c8b4568"
+  },
+  "penguin_id": "APT-2023-002",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-08T09:00:00Z",
+      "weight_kg": 4.1,
+      "condition": "normal",
+      "location": "Robben Island"
+    },
+    {
+      "date": "2023-01-25T10:30:00Z",
+      "weight_kg": 4.3,
+      "condition": "normal",
+      "location": "Robben Island"
+    },
+    {
+      "date": "2023-02-15T11:45:00Z",
+      "weight_kg": 4.7,
+      "condition": "overweight",
+      "location": "Robben Island"
+    },
+    {
+      "date": "2023-03-10T09:15:00Z",
+      "weight_kg": 4.5,
+      "condition": "normal",
+      "location": "Robben Island"
+    },
+    {
+      "date": "2023-04-18T08:30:00Z",
+      "weight_kg": 4.4,
+      "condition": "normal",
+      "location": "Robben Island"
+    },
+    {
+      "date": "2023-05-05T10:00:00Z",
+      "weight_kg": 4.6,
+      "condition": "normal",
+      "location": "Robben Island"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "5f8d8c7b5d1c2d1e9c8b4569"
+  },
+  "penguin_id": "APT-2023-003",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-12T08:45:00Z",
+      "weight_kg": 2.8,
+      "condition": "normal",
+      "location": "Stony Point"
+    },
+    {
+      "date": "2023-01-28T09:30:00Z",
+      "weight_kg": 2.6,
+      "condition": "underweight",
+      "location": "Stony Point"
+    },
+    {
+      "date": "2023-02-18T10:15:00Z",
+      "weight_kg": 2.3,
+      "condition": "critical",
+      "location": "Stony Point"
+    },
+    {
+      "date": "2023-03-15T08:45:00Z",
+      "weight_kg": 2.5,
+      "condition": "underweight",
+      "location": "Stony Point"
+    },
+    {
+      "date": "2023-04-20T09:30:00Z",
+      "weight_kg": 2.7,
+      "condition": "underweight",
+      "location": "Stony Point"
+    },
+    {
+      "date": "2023-05-10T10:15:00Z",
+      "weight_kg": 2.9,
+      "condition": "normal",
+      "location": "Stony Point"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "5f8d8c7b5d1c2d1e9c8b4570"
+  },
+  "penguin_id": "APT-2023-004",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-15T09:00:00Z",
+      "weight_kg": 4.4,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-02-01T10:15:00Z",
+      "weight_kg": 4.2,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-02-20T11:30:00Z",
+      "weight_kg": 4.5,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-03-18T09:15:00Z",
+      "weight_kg": 4.6,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-04-22T08:30:00Z",
+      "weight_kg": 4.5,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-05-15T10:45:00Z",
+      "weight_kg": 4.7,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "5f8d8c7b5d1c2d1e9c8b4571"
+  },
+  "penguin_id": "APT-2023-005",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-18T08:15:00Z",
+      "weight_kg": 3.7,
+      "condition": "normal",
+      "location": "Robben Island"
+    },
+    {
+      "date": "2023-02-05T09:30:00Z",
+      "weight_kg": 3.5,
+      "condition": "normal",
+      "location": "Robben Island"
+    },
+    {
+      "date": "2023-03-01T10:45:00Z",
+      "weight_kg": 3.8,
+      "condition": "normal",
+      "location": "Robben Island"
+    },
+    {
+      "date": "2023-03-25T08:00:00Z",
+      "weight_kg": 3.6,
+      "condition": "normal",
+      "location": "Robben Island"
+    },
+    {
+      "date": "2023-04-28T11:15:00Z",
+      "weight_kg": 3.9,
+      "condition": "normal",
+      "location": "Robben Island"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "5f8d8c7b5d1c2d1e9c8b4572"
+  },
+  "penguin_id": "APT-2023-006",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-22T09:45:00Z",
+      "weight_kg": 3.9,
+      "condition": "normal",
+      "location": "Betty's Bay"
+    },
+    {
+      "date": "2023-02-08T10:30:00Z",
+      "weight_kg": 4.1,
+      "condition": "normal",
+      "location": "Betty's Bay"
+    },
+    {
+      "date": "2023-03-05T11:15:00Z",
+      "weight_kg": 4.3,
+      "condition": "normal",
+      "location": "Betty's Bay"
+    },
+    {
+      "date": "2023-04-10T08:45:00Z",
+      "weight_kg": 4.2,
+      "condition": "normal",
+      "location": "Betty's Bay"
+    },
+    {
+      "date": "2023-05-18T09:30:00Z",
+      "weight_kg": 4.4,
+      "condition": "normal",
+      "location": "Betty's Bay"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "5f8d8c7b5d1c2d1e9c8b4573"
+  },
+  "penguin_id": "APT-2023-007",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-25T08:30:00Z",
+      "weight_kg": 3,
+      "condition": "normal",
+      "location": "Stony Point"
+    },
+    {
+      "date": "2023-02-12T09:45:00Z",
+      "weight_kg": 2.8,
+      "condition": "underweight",
+      "location": "Stony Point"
+    },
+    {
+      "date": "2023-03-08T10:00:00Z",
+      "weight_kg": 3.1,
+      "condition": "normal",
+      "location": "Stony Point"
+    },
+    {
+      "date": "2023-04-15T11:15:00Z",
+      "weight_kg": 3.2,
+      "condition": "normal",
+      "location": "Stony Point"
+    },
+    {
+      "date": "2023-05-20T08:45:00Z",
+      "weight_kg": 3.3,
+      "condition": "normal",
+      "location": "Stony Point"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "5f8d8c7b5d1c2d1e9c8b4574"
+  },
+  "penguin_id": "APT-2023-008",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-28T09:15:00Z",
+      "weight_kg": 4.6,
+      "condition": "overweight",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-02-15T10:30:00Z",
+      "weight_kg": 4.4,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-03-12T11:45:00Z",
+      "weight_kg": 4.5,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-04-18T08:15:00Z",
+      "weight_kg": 4.3,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-05-22T09:30:00Z",
+      "weight_kg": 4.4,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "5f8d8c7b5d1c2d1e9c8b4575"
+  },
+  "penguin_id": "APT-2023-009",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-02-01T08:45:00Z",
+      "weight_kg": 3.4,
+      "condition": "normal",
+      "location": "Robben Island"
+    },
+    {
+      "date": "2023-02-18T09:30:00Z",
+      "weight_kg": 3.2,
+      "condition": "normal",
+      "location": "Robben Island"
+    },
+    {
+      "date": "2023-03-15T10:15:00Z",
+      "weight_kg": 3.5,
+      "condition": "normal",
+      "location": "Robben Island"
+    },
+    {
+      "date": "2023-04-20T11:30:00Z",
+      "weight_kg": 3.3,
+      "condition": "normal",
+      "location": "Robben Island"
+    },
+    {
+      "date": "2023-05-25T08:45:00Z",
+      "weight_kg": 3.6,
+      "condition": "normal",
+      "location": "Robben Island"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "5f8d8c7b5d1c2d1e9c8b4576"
+  },
+  "penguin_id": "APT-2023-010",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-02-05T09:00:00Z",
+      "weight_kg": 4,
+      "condition": "normal",
+      "location": "Betty's Bay"
+    },
+    {
+      "date": "2023-02-22T10:15:00Z",
+      "weight_kg": 4.2,
+      "condition": "normal",
+      "location": "Betty's Bay"
+    },
+    {
+      "date": "2023-03-20T11:30:00Z",
+      "weight_kg": 4.1,
+      "condition": "normal",
+      "location": "Betty's Bay"
+    },
+    {
+      "date": "2023-04-25T08:45:00Z",
+      "weight_kg": 4.3,
+      "condition": "normal",
+      "location": "Betty's Bay"
+    },
+    {
+      "date": "2023-05-28T09:15:00Z",
+      "weight_kg": 4.2,
+      "condition": "normal",
+      "location": "Betty's Bay"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "682234ccc8fc872dc1606062"
+  },
+  "penguin_id": "APT-2023-010",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-02-05T09:00:00Z",
+      "weight_kg": 4,
+      "condition": "normal",
+      "location": "Betty's Bay"
+    },
+    {
+      "date": "2023-02-22T10:15:00Z",
+      "weight_kg": 4.2,
+      "condition": "normal",
+      "location": "Betty's Bay"
+    },
+    {
+      "date": "2023-03-20T11:30:00Z",
+      "weight_kg": 4.1,
+      "condition": "normal",
+      "location": "Betty's Bay"
+    },
+    {
+      "date": "2023-04-25T08:45:00Z",
+      "weight_kg": 4.3,
+      "condition": "normal",
+      "location": "Betty's Bay"
+    },
+    {
+      "date": "2023-05-28T09:15:00Z",
+      "weight_kg": 4.2,
+      "condition": "normal",
+      "location": "Betty's Bay"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "682234cec8fc872dc1606063"
+  },
+  "penguin_id": "APT-2023-004",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-08T07:30:00Z",
+      "weight_kg": 4.5,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-02-03T10:45:00Z",
+      "weight_kg": 4.3,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-03-20T09:00:00Z",
+      "weight_kg": 4.6,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "682234d0c8fc872dc1606064"
+  },
+  "penguin_id": "APT-2023-003",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-15T09:45:00Z",
+      "weight_kg": 2.9,
+      "condition": "normal",
+      "location": "Stony Point"
+    },
+    {
+      "date": "2023-02-10T08:15:00Z",
+      "weight_kg": 2.4,
+      "condition": "critical",
+      "location": "Stony Point"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "682234d4c8fc872dc1606065"
+  },
+  "penguin_id": "APT-2023-002",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-12T10:00:00Z",
+      "weight_kg": 4.2,
+      "condition": "normal",
+      "location": "Robben Island"
+    },
+    {
+      "date": "2023-02-08T11:30:00Z",
+      "weight_kg": 4.8,
+      "condition": "overweight",
+      "location": "Robben Island"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "682234d7c8fc872dc1606066"
+  },
+  "penguin_id": "APT-2023-001",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-10T08:30:00Z",
+      "weight_kg": 3.1,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-02-05T09:15:00Z",
+      "weight_kg": 2.7,
+      "condition": "underweight",
+      "location": "Boulders Beach"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "682234dbc8fc872dc1606067"
+  },
+  "penguin_id": "APT-2023-004",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-08T07:30:00Z",
+      "weight_kg": 4.5,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-02-03T10:45:00Z",
+      "weight_kg": 4.3,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-03-20T09:00:00Z",
+      "weight_kg": 4.6,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "682234dfc8fc872dc1606068"
+  },
+  "penguin_id": "APT-2023-003",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-15T09:45:00Z",
+      "weight_kg": 2.9,
+      "condition": "normal",
+      "location": "Stony Point"
+    },
+    {
+      "date": "2023-02-10T08:15:00Z",
+      "weight_kg": 2.4,
+      "condition": "critical",
+      "location": "Stony Point"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "682234e2c8fc872dc1606069"
+  },
+  "penguin_id": "APT-2023-001",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-10T08:30:00Z",
+      "weight_kg": 3.1,
+      "condition": "normal",
+      "location": "Boulders Beach"
+    },
+    {
+      "date": "2023-02-05T09:15:00Z",
+      "weight_kg": 2.7,
+      "condition": "underweight",
+      "location": "Boulders Beach"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "682234e6c8fc872dc160606a"
+  },
+  "penguin_id": "APT-2023-003",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-15T09:45:00Z",
+      "weight_kg": 2.9,
+      "condition": "normal",
+      "location": "Stony Point"
+    },
+    {
+      "date": "2023-02-10T08:15:00Z",
+      "weight_kg": 2.4,
+      "condition": "critical",
+      "location": "Stony Point"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "682234eac8fc872dc160606b"
+  },
+  "penguin_id": "APT-2023-005",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-01-20T08:00:00Z",
+      "weight_kg": 3.8,
+      "condition": "normal",
+      "location": "Robben Island"
+    },
+    {
+      "date": "2023-02-15T09:30:00Z",
+      "weight_kg": 3.2,
+      "condition": "normal",
+      "location": "Robben Island"
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "682234f1c8fc872dc160606c"
+  },
+  "penguin_id": "APT-2023-010",
+  "species": "African Penguin",
+  "measurements": [
+    {
+      "date": "2023-02-05T09:00:00Z",
+      "weight_kg": 4,
+      "condition": "normal",
+      "location": "Betty's Bay"
+    },
+    {
+      "date": "2023-02-22T10:15:00Z",
+      "weight_kg": 4.2,
+      "condition": "normal",
+      "location": "Betty's Bay"
+    },
+    {
+      "date": "2023-03-20T11:30:00Z",
+      "weight_kg": 4.1,
+      "condition": "normal",
+      "location": "Betty's Bay"
+    },
+    {
+      "date": "2023-04-25T08:45:00Z",
+      "weight_kg": 4.3,
+      "condition": "normal",
+      "location": "Betty's Bay"
+    },
+    {
+      "date": "2023-05-28T09:15:00Z",
+      "weight_kg": 4.2,
+      "condition": "normal",
+      "location": "Betty's Bay"
+    }
+  ]
+}]
