@@ -81,3 +81,27 @@ document.querySelectorAll('.article-card').forEach(card => {
       }
     });
   });
+
+  
+async function performSearch() {
+    const searchTerm = document.getElementById('penguin-search').value.trim();
+    if (!searchTerm) return;
+
+    try {
+        const response = await fetch(`/api/search_penguin?id=${encodeURIComponent(searchTerm)}`);
+        const data = await response.json();
+        
+        if (data.success) {
+            // Option 1: Redirect to detail page
+            window.location.href = data.redirect_url;
+            
+            // Option 2: Update page dynamically
+            // updatePenguinDisplay(data.penguin);
+        } else {
+            alert(data.message);
+        }
+    } catch (error) {
+        console.error('Search failed:', error);
+        alert('Search failed. Please try again.');
+    }
+}

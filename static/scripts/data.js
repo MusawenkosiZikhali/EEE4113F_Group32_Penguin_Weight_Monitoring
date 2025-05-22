@@ -52,3 +52,62 @@ document.addEventListener('DOMContentLoaded', function() {
     // Apply button
     document.getElementById('apply-filters').addEventListener('click', filterPenguins);
 });
+
+let currentPage = 1;
+const cardsPerPage = 15;
+let allPenguinCards = [];
+let filteredPenguinCards = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+    allPenguinCards = Array.from(document.querySelectorAll('.penguin-card'));
+    filteredPenguinCards = [...allPenguinCards];
+    updatePage();
+});
+
+function updatePage() {
+    // Hide all cards first
+    allPenguinCards.forEach(card => card.style.display = 'none');
+    
+    // Calculate start and end index
+    const startIndex = (currentPage - 1) * cardsPerPage;
+    const endIndex = startIndex + cardsPerPage;
+    
+    // Show only the cards for current page
+    filteredPenguinCards.slice(startIndex, endIndex).forEach(card => {
+        card.style.display = 'block';
+    });
+    
+    // Update page info
+    document.getElementById('page-info').textContent = 
+        `Page ${currentPage} of ${Math.ceil(filteredPenguinCards.length / cardsPerPage)}`;
+    
+    // Update button states
+    document.getElementById('prev-page').disabled = currentPage === 1;
+    document.getElementById('next-page').disabled = 
+        endIndex >= filteredPenguinCards.length;
+}
+
+function prevPage() {
+    if (currentPage > 1) {
+        currentPage--;
+        updatePage();
+    }
+}
+
+function nextPage() {
+    const totalPages = Math.ceil(filteredPenguinCards.length / cardsPerPage);
+    if (currentPage < totalPages) {
+        currentPage++;
+        updatePage();
+    }
+}
+
+// Modify your existing filterPenguins function to reset to page 1 when filtering
+function filterPenguins() {
+    // Your existing filtering logic...
+    
+    // After filtering, reset to page 1
+    currentPage = 1;
+    filteredPenguinCards = Array.from(document.querySelectorAll('.penguin-card:not([style*="display: none"])'));
+    updatePage();
+}

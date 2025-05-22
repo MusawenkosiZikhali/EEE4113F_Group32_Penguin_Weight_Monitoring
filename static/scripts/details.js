@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize the weight trend chart
     initWeightChart();
     
-    // Set up interactive elements
+    // Set up measurement table with pagination
     setupMeasurementTable();
     
     // Add any dynamic behavior
@@ -56,24 +56,55 @@ function initWeightChart() {
         }
     });
 }
+// Section 5: Pagination
+document.addEventListener('DOMContentLoaded', function() {
+  const rowsPerPage = 10;
+  const tableBody = document.getElementById('table-body');
+  const rows = Array.from(tableBody.querySelectorAll('tr'));
+  const totalPages = Math.ceil(rows.length / rowsPerPage);
+  let currentPage = 1;
 
-function setupMeasurementTable() {
-    const table = document.querySelector('.measurement-table table');
-    if (!table) return;
-    
-    // Make table rows interactive
-    table.addEventListener('click', function(e) {
-        const row = e.target.closest('tr');
-        if (!row || row.classList.contains('expanded')) return;
-        
-        // Highlight selected measurement
-        document.querySelectorAll('tr').forEach(r => r.classList.remove('selected'));
-        row.classList.add('selected');
-        
-        // You could add additional functionality here
-        // For example, show more details about this specific measurement
+  const prevBtn = document.getElementById('prev-page');
+  const nextBtn = document.getElementById('next-page');
+  const pageInfo = document.getElementById('page-info');
+
+  function showPage(page) {
+    const startRow = (page - 1) * rowsPerPage;
+    const endRow = page * rowsPerPage;
+
+    rows.forEach((row, index) => {
+      if (index >= startRow && index < endRow) {
+        row.style.display = 'table-row';
+      } else {
+        row.style.display = 'none';
+      }
     });
-}
+
+    pageInfo.textContent = `Page ${page} of ${totalPages}`;
+
+    // Enable/Disable buttons
+    prevBtn.disabled = page === 1;
+    nextBtn.disabled = page === totalPages;
+  }
+
+  // Initial page load
+  showPage(currentPage);
+
+  // Event listeners for buttons
+  prevBtn.addEventListener('click', function() {
+    if (currentPage > 1) {
+      currentPage--;
+      showPage(currentPage);
+    }
+  });
+
+    nextBtn.addEventListener('click', function() {
+    if (currentPage < totalPages) {
+      currentPage++;
+      showPage(currentPage);
+    }
+  });
+});
 
 function setupDynamicUI() {
     // Add status indicator animation
@@ -88,7 +119,7 @@ function setupDynamicUI() {
     const tooltips = {
         'Date': 'Date of measurement (YYYY-MM-DD)',
         'Weight': 'Weight in kilograms',
-        'Condition': 'Health assessment status'
+        'Location': 'Where the measurement was taken'
     };
     
     document.querySelectorAll('th').forEach(th => {
@@ -109,3 +140,4 @@ function setupDynamicUI() {
         }
     });
 }
+
