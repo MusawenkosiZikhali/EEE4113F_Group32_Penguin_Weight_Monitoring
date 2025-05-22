@@ -9,8 +9,10 @@
 </head>
 <body>
     <!-- Reuse the same video background and header from index.html -->
-    <div class="video-container">
-        <video autoplay muted loop playsinline src="{{ url_for('static', filename='videos/video.mp4') }}"></video>
+   <div class="video-container">
+        <video autoplay muted loop playsinline 
+        preload="auto" 
+        src="{{ url_for('static', filename='videos/video2.mp4') }}" ></video>
         <div class="video-overlay"></div>
     </div>
 
@@ -24,9 +26,14 @@
                 <li><a href="{{ url_for('data_explorer') }}">Data</a></li>
                 <li><a href="{{ url_for('about') }}">About</a></li>
             </ul>
-            <div class="search-container">
-                <input type="text" placeholder="Search penguins..." class="search-input">
-                <button class="search-button">
+            <div class="search-container" id="search-container">
+                <input type="text" 
+                      placeholder="Search by Penguin ID..." 
+                      class="search-input" 
+                      id="penguin-search"
+                      autocomplete="off"
+                      onkeydown="handleSearchKeydown(event)">
+                <button class="search-button" onclick="performSearch()">
                     <i class="fas fa-search"></i>
                 </button>
             </div>
@@ -133,5 +140,6 @@
     </div>
 
     <script src="{{ url_for('static', filename='scripts/scripts.js') }}"></script>
+    
 </body>
 </html>
