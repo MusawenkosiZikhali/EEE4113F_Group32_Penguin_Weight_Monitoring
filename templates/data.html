@@ -26,10 +26,10 @@
                 <li><a href="{{ url_for('about') }}">About</a></li>
             </ul>
             <div class="search-container">
-                <input type="text" placeholder="Search penguins..." class="search-input" id="global-search">
+                <!-- <input type="text" placeholder="Search penguins..." class="search-input" id="global-search">
                 <button class="search-button">
                     <i class="fas fa-search"></i>
-                </button>
+                </button> -->
             </div>
         </nav>
     </header>
@@ -46,6 +46,8 @@
                     <option value="Stony Point">Stony Point</option>
                     <option value="Robben Island">Robben Island</option>
                     <option value="Betty's Bay">Betty's Bay</option>
+                    <option value="Halifax Island">Halifax Island</option>
+                    <option value="Possession Island">Possession Island</option>
                 </select>
                 </div>
 
@@ -53,9 +55,9 @@
                 <h3>Weight Status</h3>
                 <select id="weight-filter" onchange="filterPenguins()">
                     <option value="all">All Weights</option>
-                    <option value="overweight">Overweight (>4.5kg)</option>
-                    <option value="underweight">Underweight (<3kg)</option>
-                    <option value="normal">Normal (3-4.5kg)</option>
+                    <option value="overweight"> >3.6kg</option>
+                    <option value="underweight"> <2.1kg</option>
+                    <option value="normal"> 2.2-3.5kg</option>
                 </select>
                 </div>
                 <div class="filter-group">
@@ -69,17 +71,21 @@
             <div class="results-grid">
                 {% for penguin in penguins %}
                 <div class="penguin-card">
+                    <a href="{{ url_for('penguin_detail', penguin_id=penguin.penguin_id) }}" class="card-link">
                     <div class="card-image">
                         <img src="{{ url_for('static', filename='images/african.jpg') }}" alt="Penguin {{ penguin.penguin_id }}">
                     </div>
                     <div class="card-content">
                         <h3>{{ penguin.penguin_id }}</h3>
-                        <p><strong>Location:</strong> {{ penguin.location }}</p>
                         <p><strong>Weight:</strong> {{ penguin.weight }} kg</p>
-                        <p><strong>Condition:</strong> <span class="status-{{ penguin.condition.lower() }}">{{ penguin.condition }}</span></p>
                         <p><small>Last measured: {{ penguin.last_measured[:10] }}</small></p>
-                        <a href="{{ url_for('penguin_detail', penguin_id=penguin.penguin_id) }}" class="view-details">View Details</a>
+                        <!-- <p><strong>Location:</strong> {{ penguin.location }}</p>
+                        
+                        <p><strong>Condition:</strong> <span class="status-{{ penguin.condition.lower() }}">{{ penguin.condition }}</span></p>
+                         -->
+                        <!-- <a href="{{ url_for('penguin_detail', penguin_id=penguin.penguin_id) }}" class="view-details">View Details</a> -->
                     </div>
+                    </a>
                 </div>
                 {% else %}
                 <div class="empty-state">
@@ -88,6 +94,15 @@
                     <p>Try adjusting your filters</p>
                 </div>
                 {% endfor %}
+            </div>
+            <div class="pagination-controls">
+                <button id="prev-page" onclick="prevPage()" disabled>
+                    <i class="fas fa-chevron-left"></i> Previous
+                </button>
+                <span id="page-info">Page 1</span>
+                <button id="next-page" onclick="nextPage()">
+                    Next <i class="fas fa-chevron-right"></i>
+                </button>
             </div>
         </section>
     </main>
