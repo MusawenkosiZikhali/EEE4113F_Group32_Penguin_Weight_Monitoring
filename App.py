@@ -122,10 +122,14 @@ def penguin_detail(penguin_id):
         
         if len(sorted_measurements) >= 2:
             # Get the two most recent measurements
-            recent = sorted_measurements[:2]
-            weight_diff = ((recent[0]['weight_kg']-recent[1]['weight_kg'])/recent[1]['weight_kg'])*100
-            weight_change_rate = round((weight_diff), 2)  # kg/week
-                
+            if len(sorted_measurements) >=10:
+                recent = sorted_measurements[:10]
+                weight_diff = ((recent[0]['weight_kg']-recent[9]['weight_kg'])/recent[9]['weight_kg'])*100
+                weight_change_rate = round((weight_diff), 2)  # kg/week
+            else:
+                recent = sorted_measurements[:]
+                weight_diff = ((recent[0]['weight_kg']-recent[-1]['weight_kg'])/recent[-1]['weight_kg'])*100
+                weight_change_rate = round((weight_diff), 2)  # kg/week
 
 
         # Prepare additional stats for the template

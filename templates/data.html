@@ -77,13 +77,9 @@
                     </div>
                     <div class="card-content">
                         <h3>{{ penguin.penguin_id }}</h3>
+                        <p><strong>Location:</strong> {{ penguin.location }}</p>
                         <p><strong>Weight:</strong> {{ penguin.weight }} kg</p>
                         <p><small>Last measured: {{ penguin.last_measured[:10] }}</small></p>
-                        <!-- <p><strong>Location:</strong> {{ penguin.location }}</p>
-                        
-                        <p><strong>Condition:</strong> <span class="status-{{ penguin.condition.lower() }}">{{ penguin.condition }}</span></p>
-                         -->
-                        <!-- <a href="{{ url_for('penguin_detail', penguin_id=penguin.penguin_id) }}" class="view-details">View Details</a> -->
                     </div>
                     </a>
                 </div>

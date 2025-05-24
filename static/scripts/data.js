@@ -1,68 +1,40 @@
-function filterPenguins() {
-    // Get filter values (similar to beaches.html)
-    const searchText = document.getElementById('id-search').value.toLowerCase();
-    const selectedLocation = document.getElementById('location-filter').value;
-    const selectedWeight = document.getElementById('weight-filter').value;
-    
-    // Select all penguin cards (like beachCards)
-    const penguinCards = document.querySelectorAll('.penguin-card');
-
-    penguinCards.forEach(card => {
-        // Get penguin data (similar to beach data extraction)
-        const penguinId = card.querySelector('h3').textContent.toLowerCase();
-        const location = card.querySelector('p:nth-of-type(1)').textContent.toLowerCase();
-        const weightText = card.querySelector('p:nth-of-type(2)').textContent;
-        const weight = parseFloat(weightText.match(/\d+\.?\d*/)[0]);
-        const condition = card.querySelector('p:nth-of-type(3)').textContent.toLowerCase();
-
-        // Create filter conditions (like matchesfilter/matchesSafety)
-        const matchesSearch = searchText === '' || 
-                            penguinId.includes(searchText) || 
-                            location.includes(searchText);
-        
-        const matchesLocation = selectedLocation === 'all' || 
-                              location.includes(selectedLocation.toLowerCase());
-        
-        // Weight filter logic (specific to penguins)
-        let matchesWeight = true;
-        if (selectedWeight !== 'all') {
-            if (selectedWeight === 'overweight' && weight <= 4.5) matchesWeight = false;
-            if (selectedWeight === 'underweight' && weight >= 3) matchesWeight = false;
-            if (selectedWeight === 'normal' && (weight < 3 || weight > 4.5)) matchesWeight = false;
-        }
-
-        // Show/Hide based on conditions (same pattern as beaches.html)
-        if (matchesSearch && matchesLocation && matchesWeight) {
-            card.style.display = 'block'; // Show card
-        } else {
-            card.style.display = 'none'; // Hide card
-        }
-    });
-}
-
-// Initialize event listeners (similar pattern)
-document.addEventListener('DOMContentLoaded', function() {
-    // Text search
-    document.getElementById('id-search').addEventListener('input', filterPenguins);
-    
-    // Dropdown filters
-    document.getElementById('location-filter').addEventListener('change', filterPenguins);
-    document.getElementById('weight-filter').addEventListener('change', filterPenguins);
-    
-    // Apply button
-    document.getElementById('apply-filters').addEventListener('click', filterPenguins);
-});
-
 let currentPage = 1;
 const cardsPerPage = 15;
 let allPenguinCards = [];
 let filteredPenguinCards = [];
 
-document.addEventListener('DOMContentLoaded', function() {
-    allPenguinCards = Array.from(document.querySelectorAll('.penguin-card'));
-    filteredPenguinCards = [...allPenguinCards];
+function filterPenguins() {
+    const searchText = document.getElementById('id-search').value.toLowerCase();
+    const selectedLocation = document.getElementById('location-filter').value;
+    const selectedWeight = document.getElementById('weight-filter').value;
+    
+    allPenguinCards = document.querySelectorAll('.penguin-card');
+    filteredPenguinCards = [];
+
+    allPenguinCards.forEach(card => {
+        const penguinId = card.querySelector('h3').textContent.toLowerCase();
+        const location = card.querySelector('p:nth-of-type(1)').textContent.toLowerCase();
+        const weightText = card.querySelector('p:nth-of-type(2)').textContent;
+        const weight = parseFloat(weightText.match(/\d+\.?\d*/)[0]);
+
+        const matchesSearch = searchText === '' || penguinId.includes(searchText);
+        const matchesLocation = selectedLocation === 'all' || location.includes(selectedLocation.toLowerCase());
+        
+        let matchesWeight = true;
+        if (selectedWeight !== 'all') {
+            if (selectedWeight === 'overweight' && weight <= 3.6) matchesWeight = false;
+            if (selectedWeight === 'underweight' && weight >= 2.1) matchesWeight = false;
+            if (selectedWeight === 'normal' && (weight < 2.2 || weight > 3.5)) matchesWeight = false;
+        }
+
+        if (matchesSearch && matchesLocation && matchesWeight) {
+            filteredPenguinCards.push(card);
+        }
+    });
+
+    currentPage = 1;
     updatePage();
-});
+}
 
 function updatePage() {
     // Hide all cards first
@@ -102,12 +74,13 @@ function nextPage() {
     }
 }
 
-// Modify your existing filterPenguins function to reset to page 1 when filtering
-function filterPenguins() {
-    // Your existing filtering logic...
+document.addEventListener('DOMContentLoaded', function() {
+    allPenguinCards = document.querySelectorAll('.penguin-card');
+    filteredPenguinCards = Array.from(allPenguinCards);
     
-    // After filtering, reset to page 1
-    currentPage = 1;
-    filteredPenguinCards = Array.from(document.querySelectorAll('.penguin-card:not([style*="display: none"])'));
+    document.getElementById('id-search').addEventListener('input', filterPenguins);
+    document.getElementById('location-filter').addEventListener('change', filterPenguins);
+    document.getElementById('weight-filter').addEventListener('change', filterPenguins);
+    
     updatePage();
-}
+});
