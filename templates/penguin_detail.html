@@ -47,7 +47,6 @@
                     alt="Latest image of {{ penguin.penguin_id }}"
                     class="penguin-image"
                     onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/african.jpg') }}'">
-                    <!-- <img src="{{ url_for('static', filename='images/african.jpg') }}" alt="Penguin {{ penguin.penguin_id }}"> -->
                 </div>
                 <div class="card-content">
                     <h1>Penguin {{ penguin.penguin_id }}</h1>
@@ -182,14 +181,19 @@
     <script>
         // Weight chart using Chart.js
         document.addEventListener('DOMContentLoaded', function() {
+
             const ctx = document.getElementById('weightChart').getContext('2d');
+
+            const allDates = {{ stats.date_labels|tojson }}.reverse(); // Reverse the dates
+            const allWeights = {{ stats.weight_history|tojson }}.reverse(); // Reverse the weights
+
             const weightChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: {{ stats.date_labels|tojson }},
+                    labels: allDates,
                     datasets: [{
                         label: 'Weight (kg)',
-                        data: {{ stats.weight_history|tojson }},
+                        data: allWeights,
                         backgroundColor: 'rgba(54, 162, 235, 0.2)',
                         borderColor: 'rgba(54, 162, 235, 1)',
                         borderWidth: 2,
