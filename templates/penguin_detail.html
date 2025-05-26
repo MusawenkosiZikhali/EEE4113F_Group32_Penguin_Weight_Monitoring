@@ -101,6 +101,7 @@
                         <th>Date</th>
                         <th>Weight (kg)</th>
                         <th>Location</th>
+                        <th>Temparature</th>
                     </tr>
                 </thead>
                 <tbody id="table-body">
@@ -109,6 +110,7 @@
                         <td>{{ measurement.date|date_format }}</td>
                         <td>{{ measurement.weight_kg }}</td>
                         <td>{{ measurement.location }}</td>
+                        <td>{{ measurement.temperature }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -157,11 +159,11 @@
     // CSV Download functionality
     document.getElementById('download-csv').addEventListener('click', function() {
         // Create CSV content
-        let csvContent = "Date,Weight (kg),Location\n";
+        let csvContent = "Date,Weight (kg),Location, temperature\n";
         
         // Add measurement data
         {% for measurement in measurements %}
-        csvContent += `"{{ measurement.date|date_format }}",{{ measurement.weight_kg }},"{{ measurement.location }}"\n`;
+        csvContent += `"{{ measurement.date|date_format }}",{{ measurement.weight_kg }},"{{ measurement.location }}","{{ measurement.temperature }}"\n`;
         {% endfor %}
         
         // Create download link
