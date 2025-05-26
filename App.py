@@ -11,7 +11,7 @@ from threading import Thread
 import base64
 import os
 from io import BytesIO
-from PIL import Image
+# from PIL import Image
 
 app = Flask(__name__)
 
