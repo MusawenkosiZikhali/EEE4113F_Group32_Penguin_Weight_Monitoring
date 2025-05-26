@@ -5,6 +5,9 @@ from bson import json_util, ObjectId
 import json
 from datetime import datetime
 from flask_caching import Cache
+import schedule
+import time
+from threading import Thread
 
 app = Flask(__name__)
 
@@ -22,7 +25,7 @@ cache = Cache(config={'CACHE_TYPE': 'SimpleCache'})
 cache.init_app(app)
 
 def get_latest_measurement(penguin):
-    """Helper function to get the most recent measurement"""
+    # Helper function to get the most recent measurement
     if 'measurements' in penguin and penguin['measurements']:
         # Sort measurements by date (newest first)
         sorted_measurements = sorted(
@@ -60,9 +63,7 @@ def data_explorer():
                 processed_penguins.append({
                     '_id': str(penguin['_id']),  # Convert ObjectId to string
                     'penguin_id': penguin['penguin_id'],
-                    'species': penguin['species'],
                     'weight': latest['weight_kg'],
-                    'condition': latest['condition'],
                     'location': latest['location'],
                     'last_measured': latest['date'],
                 })
@@ -77,12 +78,6 @@ def data_explorer():
 @app.route('/penguin/<penguin_id>')
 def penguin_detail(penguin_id):
     try:
-        # Validate penguin_id format if needed (example: check if numeric)
-        # if not penguin_id.isalnum():  # Adjust validation as per your ID format
-        #     return render_template('error.html', 
-        #                         error_code=400,
-        #                         error_message="Invalid penguin ID format"), 400
-
         # Get penguin data with projection to exclude unnecessary fields
         penguin = collection.find_one(
             {'penguin_id': penguin_id},
@@ -113,12 +108,13 @@ def penguin_detail(penguin_id):
             mean_weight = sum(weights) / len(weights)
             variance = sum((x - mean_weight) ** 2 for x in weights) / (len(weights) - 1)
             weight_stddev = round(math.sqrt(variance), 2)
+            mean_weight = round((mean_weight), 2)  # kg/week
         else:
             weight_stddev = 0.0
+            mean_weight = max(weights)
 
         # Calculate weight trend (kg/week)
         weight_change_rate = 0.0
-        is_critical = False
         
         if len(sorted_measurements) >= 2:
             # Get the two most recent measurements
@@ -126,6 +122,7 @@ def penguin_detail(penguin_id):
                 recent = sorted_measurements[:10]
                 weight_diff = ((recent[0]['weight_kg']-recent[9]['weight_kg'])/recent[9]['weight_kg'])*100
                 weight_change_rate = round((weight_diff), 2)  # kg/week
+                
             else:
                 recent = sorted_measurements[:]
                 weight_diff = ((recent[0]['weight_kg']-recent[-1]['weight_kg'])/recent[-1]['weight_kg'])*100
@@ -142,8 +139,7 @@ def penguin_detail(penguin_id):
             'min_weight': min_weight,
             'weight_stddev': weight_stddev,
             'weight_change_rate': weight_change_rate,
-            'is_critical':is_critical,
-            'critical_threshold': 2
+            'average': mean_weight
         }
 
         return render_template(
@@ -183,6 +179,62 @@ def api_search_penguin():
             'message': f'Penguin {penguin_id} not found'
         }), 404
 
+def map_weight_measurements():
+    # Get the weights collection
+    weights_collection = db['weights']
+    
+    # Get all penguins to map device names to penguin_ids
+    penguins = list(collection.find({}))
+    
+    # Creates a mapping of device names to penguin_ids
+    device_to_penguin = {p['penguin_id']: p['_id'] for p in penguins}
+    
+    # Find all weight measurements not yet processed
+    # add a 'processed' field to track which measurements have been transferred
+    unprocessed_weights = list(weights_collection.find({'processed': {'$exists': False}}))
+    
+    for weight_measurement in unprocessed_weights:
+        device = weight_measurement['device']
+        
+        if device in device_to_penguin:
+            penguin_id = device_to_penguin[device]
+            
+            # Create the measurement document
+            new_measurement = {
+                'date': weight_measurement['timestamp'],
+                'weight_kg': weight_measurement['weight'],
+                'location': weight_measurement['location'],
+                'image': weight_measurement.get('image', '')
+            }
+            
+            # Update the penguin's measurements array
+            collection.update_one(
+                {'_id': penguin_id},
+                {'$push': {'measurements': new_measurement}}
+            )
+            
+            # Mark this weight measurement as processed
+            weights_collection.update_one(
+                {'_id': weight_measurement['_id']},
+                {'$set': {'processed': True}}
+            )
+            
+            print(f"Added measurement for penguin {device} at {weight_measurement['timestamp']}")
+        else:
+            print(f"No penguin found for device {device}")
 
+def run_scheduler():
+    # Run the mapping every hour 
+    schedule.every().hour.do(map_weight_measurements)
+    
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+
+# Start the scheduler in a separate thread when the app starts
 if __name__ == '__main__':
+    scheduler_thread = Thread(target=run_scheduler)
+    scheduler_thread.daemon = True
+    scheduler_thread.start()
+    
     app.run(host='0.0.0.0', port=8080)
