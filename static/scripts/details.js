@@ -56,7 +56,8 @@ function initWeightChart() {
         }
     });
 }
-// Section 5: Pagination
+
+// Pagination
 document.addEventListener('DOMContentLoaded', function() {
   const rowsPerPage = 10;
   const tableBody = document.getElementById('table-body');
