@@ -5,6 +5,7 @@ from bson import Binary, json_util, ObjectId
 import json
 from datetime import datetime
 from flask_caching import Cache
+import requests
 import schedule
 import time
 from threading import Thread
@@ -142,7 +143,7 @@ def penguin_detail(penguin_id):
             'min_weight': min_weight,
             'weight_stddev': weight_stddev,
             'weight_change_rate': weight_change_rate,
-            'average': mean_weight
+            'average': mean_weight,
         }
 
         return render_template(
@@ -182,6 +183,42 @@ def api_search_penguin():
             'message': f'Penguin {penguin_id} not found'
         }), 404
 
+def get_weather_data(location, timestamp):
+    """Fetch weather data for a specific location and time"""
+    # Map your locations to coordinates (latitude, longitude)
+    weather_api_key = "e4f0bddc1fc2079118ed71df7a9fa6d7"
+
+    location_coords = {
+        "Boulders Beach": (-34.1975, 18.4500),
+        "Stony Point": (-34.3667, 18.9000),
+        "Robben Island": (-33.8066, 18.3662),
+        "Betty's Bay": (-34.3644, 18.8906),
+        "Halifax Island": (-26.5833, 15.0667),
+        "Possession Island": (-26.6167, 15.1167)
+    }
+    
+    if location not in location_coords:
+        return None
+        
+    latitude, longitude = location_coords[location]
+    
+    try:
+        
+        # Use current weather API (for recent measurements)
+        weather_url = f"https://api.openweathermap.org/data/2.5/weather?lat={latitude}&lon={longitude}&units=metric&appid={weather_api_key}"
+
+        response = requests.get(weather_url)
+        response.raise_for_status()
+        weather_data = response.json()
+        
+        return {
+            'temperature': weather_data['main']['temp'],
+        }
+    except Exception as e:
+        print(f"Weather API error for {location} at {timestamp}: {str(e)}")
+        return None
+
+
 def map_weight_measurements():
     # Get the weights collection
     weights_collection = db['weights']
@@ -217,6 +254,12 @@ def map_weight_measurements():
                     print(f"Error processing image for {device}: {str(e)}")
                     image_binary = None
             
+            # Get weather data
+            weather_data = get_weather_data(
+                weight_measurement['location'],
+                weight_measurement['timestamp']
+            )
+
             # Create the measurement document
             new_measurement = {
                 'date': weight_measurement['timestamp'],
@@ -224,6 +267,11 @@ def map_weight_measurements():
                 'location': weight_measurement['location'],
                 'image': image_binary  
             }
+
+            if weather_data:
+                new_measurement.update({
+                    'temperature': weather_data['temperature'],
+                })
 
             update_operations = {
                 '$push': {'measurements': new_measurement}
@@ -283,7 +331,7 @@ def get_latest_penguin_image(penguin_id):
             return "Image not found", 404
 def run_scheduler():
     # Run the mapping every hour 
-    schedule.every().hour.do(map_weight_measurements)
+    schedule.every().minutes.do(map_weight_measurements)
     
     while True:
         schedule.run_pending()
