@@ -51,28 +51,18 @@
                         <p><strong>Species:</strong> African Penguin</p>
                         <p><strong>First Seen:</strong> {{ stats.first_seen }}</p>
                         <p><strong>Measurements Taken:</strong> {{ stats.measurement_count }}</p>
+                        <p><strong>Average weights:</strong> {{ stats.average }} kg</p>
                     </div>
                     
                     <div class="current-stats">
                         <h2>Current Status</h2>
                         <p><strong>Location:</strong> {{ measurements[0].location }}</p>
                         <p><strong>Weight:</strong> {{ measurements[0].weight_kg }} kg</p>
-                        <!-- <p><strong>Condition:</strong> 
-                            <span class="status-{{ measurements[0].condition.lower() }}">
-                                {{ measurements[0].condition }}
-                            </span>
-                        </p> -->
                         <p><strong>Last Measured:</strong> {{ measurements[0].date|date_format }}</p>
                         <div class="stat-item">
                             <span class="stat-label">Max Weight:</span>
                             <span class="stat-value">{{ stats.max_weight }} kg</span>
                         </div>
-                        {% if stats.is_critical %}
-                        <div class="stat-item">
-                            <span class="stat-label color=red ">RED ZONE:</span>
-                            <i class="fas fa-exclamation-triangle critical-icon"></i>
-                        </div>
-                        {% endif %}
                         <div class="stat-item">
                             <span class="stat-label">Min Weight:</span>
                             <span class="stat-value">{{ stats.min_weight }} kg</span>
@@ -163,11 +153,11 @@
     // CSV Download functionality
     document.getElementById('download-csv').addEventListener('click', function() {
         // Create CSV content
-        let csvContent = "Date,Weight (kg),Condition,Location\n";
+        let csvContent = "Date,Weight (kg),Location\n";
         
         // Add measurement data
         {% for measurement in measurements %}
-        csvContent += `"{{ measurement.date|date_format }}",{{ measurement.weight_kg }},"{{ measurement.condition }}","{{ measurement.location }}"\n`;
+        csvContent += `"{{ measurement.date|date_format }}",{{ measurement.weight_kg }},"{{ measurement.location }}"\n`;
         {% endfor %}
         
         // Create download link
