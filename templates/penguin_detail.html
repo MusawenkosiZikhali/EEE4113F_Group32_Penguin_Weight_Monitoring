@@ -43,7 +43,11 @@
         <section class="penguin-info-section">
             <div class="penguin-card">
                 <div class="card-image">
-                    <img src="{{ url_for('static', filename='images/african.jpg') }}" alt="Penguin {{ penguin.penguin_id }}">
+                    <img src="{{ url_for('get_latest_penguin_image', penguin_id=penguin.penguin_id) }}" 
+                    alt="Latest image of {{ penguin.penguin_id }}"
+                    class="penguin-image"
+                    onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/african.jpg') }}'">
+                    <!-- <img src="{{ url_for('static', filename='images/african.jpg') }}" alt="Penguin {{ penguin.penguin_id }}"> -->
                 </div>
                 <div class="card-content">
                     <h1>Penguin {{ penguin.penguin_id }}</h1>
