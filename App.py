@@ -172,9 +172,10 @@ def api_search_penguin():
     penguin = collection.find_one({'penguin_id': penguin_id}, {'_id': 0})
     
     if penguin:
+        penguin_json = json.loads(json_util.dumps(penguin))
         return jsonify({
             'success': True,
-            'penguin': penguin,
+            'penguin': penguin_json,
             'redirect_url': url_for('penguin_detail', penguin_id=penguin_id)
         })
     else:
