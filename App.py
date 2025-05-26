@@ -1,13 +1,17 @@
 import math
-from flask import Flask, jsonify, render_template, request, url_for
+from flask import Flask, jsonify, render_template, request, send_file, send_from_directory, url_for
 from pymongo import MongoClient
-from bson import json_util, ObjectId
+from bson import Binary, json_util, ObjectId
 import json
 from datetime import datetime
 from flask_caching import Cache
 import schedule
 import time
 from threading import Thread
+import base64
+import os
+from io import BytesIO
+from PIL import Image
 
 app = Flask(__name__)
 
@@ -128,7 +132,6 @@ def penguin_detail(penguin_id):
                 weight_diff = ((recent[0]['weight_kg']-recent[-1]['weight_kg'])/recent[-1]['weight_kg'])*100
                 weight_change_rate = round((weight_diff), 2)  # kg/week
 
-
         # Prepare additional stats for the template
         stats = {
             'weight_history': [m['weight_kg'] for m in sorted_measurements],
@@ -198,19 +201,40 @@ def map_weight_measurements():
         
         if device in device_to_penguin:
             penguin_id = device_to_penguin[device]
+
+            # Process the image if it exists
+            image_binary = None
+            if 'image' in weight_measurement and weight_measurement['image']:
+                try:
+                    # Clean the base64 string (remove headers if present)
+                    base64_str = weight_measurement['image']
+                    if ',' in base64_str:
+                        base64_str = base64_str.split(',')[1]
+                    
+                    # Decode and convert to binary
+                    image_binary = Binary(base64.b64decode(base64_str))
+                except Exception as e:
+                    print(f"Error processing image for {device}: {str(e)}")
+                    image_binary = None
             
             # Create the measurement document
             new_measurement = {
                 'date': weight_measurement['timestamp'],
                 'weight_kg': weight_measurement['weight'],
                 'location': weight_measurement['location'],
-                'image': weight_measurement.get('image', '')
+                'image': image_binary  
+            }
+
+            update_operations = {
+                '$push': {'measurements': new_measurement}
             }
             
-            # Update the penguin's measurements array
+            if image_binary:
+                update_operations['$set'] = {'latest_image': image_binary}
+            
             collection.update_one(
                 {'_id': penguin_id},
-                {'$push': {'measurements': new_measurement}}
+                update_operations
             )
             
             # Mark this weight measurement as processed
@@ -223,6 +247,40 @@ def map_weight_measurements():
         else:
             print(f"No penguin found for device {device}")
 
+# Endpoint to get the latest image for a penguin
+@app.route('/penguin_latest_image/<penguin_id>')
+def get_latest_penguin_image(penguin_id):
+    try:
+        penguin = collection.find_one(
+            {'penguin_id': penguin_id},
+            {'latest_image': 1}
+        )
+        
+        if penguin and 'latest_image' in penguin and penguin['latest_image']:
+            return send_file(
+                BytesIO(penguin['latest_image']),
+                mimetype='image/jpeg'
+            )
+        
+        # Use send_from_directory for more reliable static file serving
+        return send_from_directory(
+            os.path.join(app.root_path, 'static', 'images'),
+            'african.jpg',
+            mimetype='image/jpeg'
+        )
+        
+    except Exception as e:
+        app.logger.error(f"Error serving latest image: {str(e)}")
+        try:
+            # Fallback to default image even if the first attempt failed
+            return send_from_directory(
+                os.path.join(app.root_path, 'static', 'images'),
+                'default.jpg',
+                mimetype='image/jpeg'
+            )
+        except:
+            # Ultimate fallback - return a 404 with no image
+            return "Image not found", 404
 def run_scheduler():
     # Run the mapping every hour 
     schedule.every().hour.do(map_weight_measurements)
