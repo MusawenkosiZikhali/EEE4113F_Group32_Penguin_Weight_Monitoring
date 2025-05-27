@@ -368,5 +368,6 @@ if __name__ == '__main__':
     scheduler_thread = Thread(target=run_scheduler)
     scheduler_thread.daemon = True
     scheduler_thread.start()
+    map_weight_measurements()
     
     app.run(host='0.0.0.0', port=8080)
