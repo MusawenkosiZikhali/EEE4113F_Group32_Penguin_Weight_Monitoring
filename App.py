@@ -219,6 +219,23 @@ def get_weather_data(location, timestamp):
         print(f"Weather API error for {location} at {timestamp}: {str(e)}")
         return None
 
+def add_new_penguin(device_name):
+    """Add a new penguin to the database with default values"""
+    try:
+        # Create a new penguin document
+        new_penguin = {
+            'penguin_id': device_name,  # Using device name as penguin_id
+            'species': 'African Penguin',  # Default species
+            'measurements': []  # Start with empty measurements
+        }
+        
+        # Insert into database
+        result = collection.insert_one(new_penguin)
+        print(f"Created new penguin: {device_name} with ID: {result.inserted_id}")
+        return result.inserted_id
+    except Exception as e:
+        print(f"Error creating new penguin {device_name}: {str(e)}")
+        return None
 
 def map_weight_measurements():
     # Get the weights collection
@@ -237,64 +254,73 @@ def map_weight_measurements():
     for weight_measurement in unprocessed_weights:
         device = weight_measurement['device']
         
-        if device in device_to_penguin:
-            penguin_id = device_to_penguin[device]
+        if device not in device_to_penguin:
+            # If device not found, create a new penguin
+            new_penguin_id = add_new_penguin(device)
+            if new_penguin_id:
+                device_to_penguin[device] = new_penguin_id
+                # Refresh penguins list to include the new one
+                penguins = list(collection.find({}))
+            else:
+                print(f"Failed to create penguin for device {device}, skipping measurement")
+                continue
 
-            # Process the image if it exists
-            image_binary = None
-            if 'image' in weight_measurement and weight_measurement['image']:
-                try:
-                    # Clean the base64 string (remove headers if present)
-                    base64_str = weight_measurement['image']
-                    if ',' in base64_str:
-                        base64_str = base64_str.split(',')[1]
-                    
-                    # Decode and convert to binary
-                    image_binary = Binary(base64.b64decode(base64_str))
-                except Exception as e:
-                    print(f"Error processing image for {device}: {str(e)}")
-                    image_binary = None
-            
-            # Get weather data
-            weather_data = get_weather_data(
-                weight_measurement['location'],
-                weight_measurement['timestamp']
-            )
+        penguin_id = device_to_penguin[device]
 
-            # Create the measurement document
-            new_measurement = {
-                'date': weight_measurement['timestamp'],
-                'weight_kg': weight_measurement['weight'],
-                'location': weight_measurement['location'],
-                'image': image_binary  
-            }
+        # Process the image if it exists
+        image_binary = None
+        if 'image' in weight_measurement and weight_measurement['image']:
+            try:
+                # Clean the base64 string (remove headers if present)
+                base64_str = weight_measurement['image']
+                if ',' in base64_str:
+                    base64_str = base64_str.split(',')[1]
+                
+                # Decode and convert to binary
+                image_binary = Binary(base64.b64decode(base64_str))
+            except Exception as e:
+                print(f"Error processing image for {device}: {str(e)}")
+                image_binary = None
+        
+        # Get weather data
+        weather_data = get_weather_data(
+            weight_measurement['location'],
+            weight_measurement['timestamp']
+        )
 
-            if weather_data:
-                new_measurement.update({
-                    'temperature': weather_data['temperature'],
-                })
+        # Create the measurement document
+        new_measurement = {
+            'date': weight_measurement['timestamp'],
+            'weight_kg': weight_measurement['weight'],
+            'location': weight_measurement['location'],
+            'image': image_binary  
+        }
 
-            update_operations = {
-                '$push': {'measurements': new_measurement}
-            }
-            
-            if image_binary:
-                update_operations['$set'] = {'latest_image': image_binary}
-            
-            collection.update_one(
-                {'_id': penguin_id},
-                update_operations
-            )
-            
-            # Mark this weight measurement as processed
-            weights_collection.update_one(
-                {'_id': weight_measurement['_id']},
-                {'$set': {'processed': True}}
-            )
-            
-            print(f"Added measurement for penguin {device} at {weight_measurement['timestamp']}")
-        else:
-            print(f"No penguin found for device {device}")
+        if weather_data:
+            new_measurement.update({
+                'temperature': weather_data['temperature'],
+            })
+
+        update_operations = {
+            '$push': {'measurements': new_measurement}
+        }
+        
+        if image_binary:
+            update_operations['$set'] = {'latest_image': image_binary}
+        
+        collection.update_one(
+            {'_id': penguin_id},
+            update_operations
+        )
+        
+        # Mark this weight measurement as processed
+        weights_collection.update_one(
+            {'_id': weight_measurement['_id']},
+            {'$set': {'processed': True}}
+        )
+        
+        print(f"Added measurement for penguin {device} at {weight_measurement['timestamp']}")
+
 
 # Endpoint to get the latest image for a penguin
 @app.route('/penguin_latest_image/<penguin_id>')
@@ -332,7 +358,7 @@ def get_latest_penguin_image(penguin_id):
             return "Image not found", 404
 def run_scheduler():
     # Run the mapping every hour 
-    schedule.every().minute.do(map_weight_measurements)
+    schedule.every().seconds.do(map_weight_measurements)
     
     while True:
         schedule.run_pending()
