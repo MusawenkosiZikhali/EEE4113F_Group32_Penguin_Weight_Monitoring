@@ -222,7 +222,7 @@ def get_weather_data(location, timestamp):
 
 def map_weight_measurements():
     # Get the weights collection
-    weights_collection = db['weights_kg']
+    weights_collection = db['weight_kg']
     
     # Get all penguins to map device names to penguin_ids
     penguins = list(collection.find({}))
