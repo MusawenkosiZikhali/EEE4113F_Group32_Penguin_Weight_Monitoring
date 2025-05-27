@@ -225,7 +225,6 @@ def add_new_penguin(device_name):
         # Create a new penguin document
         new_penguin = {
             'penguin_id': device_name,  # Using device name as penguin_id
-            'species': 'African Penguin',  # Default species
             'measurements': []  # Start with empty measurements
         }
         
