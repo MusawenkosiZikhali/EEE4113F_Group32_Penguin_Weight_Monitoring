@@ -222,7 +222,7 @@ def get_weather_data(location, timestamp):
 
 def map_weight_measurements():
     # Get the weights collection
-    weights_collection = db['weight_kg']
+    weights_collection = db['weights']
     
     # Get all penguins to map device names to penguin_ids
     penguins = list(collection.find({}))
@@ -264,7 +264,7 @@ def map_weight_measurements():
             # Create the measurement document
             new_measurement = {
                 'date': weight_measurement['timestamp'],
-                'weight_kg': weight_measurement['weight_kg'],
+                'weight_kg': weight_measurement['weight'],
                 'location': weight_measurement['location'],
                 'image': image_binary  
             }
@@ -332,7 +332,7 @@ def get_latest_penguin_image(penguin_id):
             return "Image not found", 404
 def run_scheduler():
     # Run the mapping every hour 
-    schedule.every().minutes.do(map_weight_measurements)
+    schedule.every().minute.do(map_weight_measurements)
     
     while True:
         schedule.run_pending()
