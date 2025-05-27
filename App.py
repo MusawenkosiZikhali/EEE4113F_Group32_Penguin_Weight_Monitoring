@@ -264,7 +264,7 @@ def map_weight_measurements():
             # Create the measurement document
             new_measurement = {
                 'date': weight_measurement['timestamp'],
-                'weight_kg': weight_measurement['weight'],
+                'weight_kg': weight_measurement['weight_kg'],
                 'location': weight_measurement['location'],
                 'image': image_binary  
             }
